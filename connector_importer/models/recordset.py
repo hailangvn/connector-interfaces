@@ -205,13 +205,14 @@ class ImportRecordset(models.Model):
         res = "no_job"
         if not self.job_id or not self.record_ids:
             return res
-        records_job_states = self.mapped("record_ids.job_id.state")
-        if all([x == DONE for x in records_job_states]):
-            res = DONE
-        else:
-            # pick the 1st one not done
-            not_done = [x for x in records_job_states if x != DONE]
-            res = not_done[0] if not_done else res
+        records_job_states = set(self.mapped("record_ids.job_id.state"))
+        count_states = len(STATES)
+        # This logic will prioritize showing FAILED status first
+        for i in range(count_states):
+            state = STATES[count_states - i - 1][0]
+            if state != DONE and state in records_job_states:
+                res = state
+                break
         return res
 
     def available_importers(self):
