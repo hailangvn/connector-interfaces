@@ -7,6 +7,8 @@
         <field name="key">partner</field>
         <!--This field is formated this way to keep clean UI view-->
         <field name="options">- model: res.partner
-  importer: importer.record.csv.std</field>
+  importer: importer.record.csv.std
+  options:
+    mapper: importer.mapper.partner</field>
     </record>
 </odoo>
